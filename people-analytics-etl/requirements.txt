@@ -1,0 +1,29 @@
+# Core Dependencies
+apache-airflow==2.7.3
+apache-airflow-providers-postgres==5.7.1
+psycopg2-binary==2.9.9
+sqlalchemy==1.4.50
+
+# Data Processing
+pandas==2.1.3
+numpy==1.24.4
+
+# Machine Learning (for turnover prediction)
+scikit-learn==1.3.2
+joblib==1.3.2
+
+# API/HTTP
+requests==2.31.0
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Code Quality
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+
+# Utilities
+python-dotenv==1.0.0
+pyyaml==6.0.1

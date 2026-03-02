@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: stg_employees
+    description: >
+      Vista staging de empleados con PII hasheada (MD5), tipos normalizados,
+      y antigüedad calculada. Filtra registros sin employee_id o hire_date.
+    columns:
+      - name: employee_id
+        description: "Identificador único del empleado"
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name_hash
+        description: "Hash MD5 del nombre (PII protegida)"
+        tests:
+          - not_null
+
+      - name: last_name_hash
+        description: "Hash MD5 del apellido (PII protegida)"
+        tests:
+          - not_null
+
+      - name: email_hash
+        description: "Hash MD5 del email (PII protegida)"
+        tests:
+          - not_null
+
+      - name: department_id
+        description: "FK departamento (-1 si desconocido)"
+        tests:
+          - not_null
+
+      - name: is_active
+        description: "Empleado activo en la organización"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+      - name: tenure_days
+        description: "Días de antigüedad (calculado)"

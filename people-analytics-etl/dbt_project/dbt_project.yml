@@ -1,0 +1,37 @@
+name: 'bourbaki_people_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'bourbaki_people_analytics'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ---------------------------------------------------------------------------
+# Materialización por capa (Convention over Configuration)
+# ---------------------------------------------------------------------------
+models:
+  bourbaki_people_analytics:
+    staging:
+      +materialized: view        # Staging = views ligeras, siempre frescas
+      +schema: staging
+      +tags: ["staging", "pii"]
+    marts:
+      +materialized: table       # Marts = tablas materializadas para performance
+      +schema: marts
+      +tags: ["marts", "analytics"]
+
+# ---------------------------------------------------------------------------
+# Variables globales del proyecto
+# ---------------------------------------------------------------------------
+vars:
+  source_schema: "raw"
+  default_hash_algo: "md5"       # Para anonimización de PII

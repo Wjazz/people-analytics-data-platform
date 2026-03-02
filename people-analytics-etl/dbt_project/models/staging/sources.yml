@@ -1,0 +1,60 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Datos crudos ingeridos — zona de aterrizaje sin transformar"
+    schema: "{{ var('source_schema', 'raw') }}"
+    loader: "airflow_etl"
+
+    tables:
+      - name: employees
+        description: >
+          Tabla cruda de empleados. Contiene PII (nombres, email) que debe ser
+          hasheada antes de downstream consumption.
+        columns:
+          - name: employee_id
+            description: "Identificador único del empleado"
+            tests:
+              - unique
+              - not_null
+          - name: first_name
+            description: "Nombre del empleado (PII — se hashea en staging)"
+          - name: last_name
+            description: "Apellido del empleado (PII — se hashea en staging)"
+          - name: email
+            description: "Email corporativo (PII)"
+          - name: department_id
+            description: "FK a departamento"
+          - name: position_id
+            description: "FK a posición"
+          - name: hire_date
+            description: "Fecha de contratación"
+          - name: termination_date
+            description: "Fecha de baja (NULL si activo)"
+          - name: is_active
+            description: "Indicador de empleado activo"
+          - name: salary
+            description: "Salario base actual"
+
+      - name: performance_reviews
+        description: >
+          Evaluaciones de rendimiento semanales/mensuales. Cada fila es una
+          review individual con rating numérico.
+        columns:
+          - name: review_id
+            description: "Identificador único de la evaluación"
+            tests:
+              - unique
+              - not_null
+          - name: employee_id
+            description: "FK al empleado evaluado"
+            tests:
+              - not_null
+          - name: review_date
+            description: "Fecha de la evaluación"
+          - name: overall_rating
+            description: "Rating general (1.0 - 5.0)"
+          - name: department_id
+            description: "Departamento al momento de la evaluación"
+          - name: reviewer_id
+            description: "Empleado que realizó la evaluación"

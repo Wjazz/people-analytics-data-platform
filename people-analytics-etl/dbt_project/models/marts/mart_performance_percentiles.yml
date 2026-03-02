@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: mart_performance_percentiles
+    description: >
+      Tabla mart con el percentil de rendimiento semanal de cada empleado
+      dentro de su departamento. Usa PERCENT_RANK() sobre overall_rating,
+      particionado por departamento y semana ISO.
+      Incluye z-score para detección de outliers y categorización por cuartil.
+    columns:
+      - name: review_id
+        description: "Identificador único de la evaluación"
+        tests:
+          - unique
+          - not_null
+
+      - name: employee_id
+        description: "Identificador del empleado evaluado"
+        tests:
+          - not_null
+
+      - name: performance_percentile
+        description: "Percentil de rendimiento [0.0 - 1.0] dentro del departamento esa semana"
+        tests:
+          - not_null
+
+      - name: performance_tier
+        description: "Categorización por cuartil: Top Performer, Above Average, Below Average, Needs Improvement"
+        tests:
+          - accepted_values:
+              values:
+                - "Top Performer"
+                - "Above Average"
+                - "Below Average"
+                - "Needs Improvement"
+
+      - name: review_week
+        description: "Semana ISO truncada (lunes de la semana)"
+        tests:
+          - not_null
+
+      - name: department_rank
+        description: "Ranking ordinal dentro del departamento (1 = mejor)"
+        tests:
+          - not_null

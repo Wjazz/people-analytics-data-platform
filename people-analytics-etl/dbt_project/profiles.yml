@@ -1,0 +1,43 @@
+# =============================================================================
+# dbt Profiles — Conexión a PostgreSQL
+#
+# INSTRUCCIONES:
+#   Opción A (recomendada): Exportar variables de entorno
+#     export DBT_PG_HOST=localhost
+#     export DBT_PG_PORT=5432
+#     export DBT_PG_USER=analytics_user
+#     export DBT_PG_PASSWORD=analytics_pass
+#     export DBT_PG_DB=people_analytics
+#     export DBT_PG_SCHEMA=public
+#
+#   Opción B: Copiar a ~/.dbt/profiles.yml y rellenar valores
+#
+#   Opción C (GCP): Usar Cloud SQL Proxy en localhost:5432
+# =============================================================================
+
+bourbaki_people_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_PG_HOST', 'localhost') }}"
+      port: "{{ env_var('DBT_PG_PORT', '5432') | int }}"
+      user: "{{ env_var('DBT_PG_USER', 'analytics_user') }}"
+      pass: "{{ env_var('DBT_PG_PASSWORD', '') }}"
+      dbname: "{{ env_var('DBT_PG_DB', 'people_analytics') }}"
+      schema: "{{ env_var('DBT_PG_SCHEMA', 'public') }}"
+      threads: 4
+      keepalives_idle: 0
+      connect_timeout: 10
+
+    prod:
+      type: postgres
+      host: "{{ env_var('DBT_PG_HOST') }}"
+      port: "{{ env_var('DBT_PG_PORT', '5432') | int }}"
+      user: "{{ env_var('DBT_PG_USER') }}"
+      pass: "{{ env_var('DBT_PG_PASSWORD') }}"
+      dbname: "{{ env_var('DBT_PG_DB') }}"
+      schema: "{{ env_var('DBT_PG_SCHEMA', 'analytics') }}"
+      threads: 8
+      keepalives_idle: 0
+      connect_timeout: 10
