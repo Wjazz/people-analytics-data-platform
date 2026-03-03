@@ -1,0 +1,5 @@
+
+# C++ Build Artifacts
+c++-csv-accelerator/build/
+*.so
+*.o
