@@ -5,31 +5,28 @@ echo "============================================================"
 echo "🚀 INICIANDO DEMO: PEOPLE ANALYTICS DATA PLATFORM"
 echo "============================================================"
 
-# 1. Levantar Infraestructura (Postgres)
-echo "[1/4] Levantando Data Warehouse (PostgreSQL)..."
+# 1. Levantar Infraestructura
+echo "[1/4] Limpiando entorno y levantando Data Warehouse (PostgreSQL)..."
+docker compose down -v 2>/dev/null
 docker compose up -d
-sleep 3 # Esperando inicialización
+sleep 5 # Tiempo extra para que Postgres exponga el puerto TCP
 
 # 2. Entorno Python
-echo "[2/4] Configurando entorno virtual..."
-python3 -m venv .venv
+echo "[2/4] Activando entorno virtual..."
 source .venv/bin/activate
-pip install -r requirements.txt --quiet
 
-# 3. Ingesta C++ (El Acelerador)
-echo "[3/4] Ejecutando Ingesta Acelerada por C++ (Pybind11)..."
-cd c++-csv-accelerator
-chmod +x demo.sh
-./demo.sh
-cd ..
+# 3. Ejecución del Extractor
+echo "[3/4] Ejecutando Extracción y Limpieza..."
+python src/extractors/csv_extractor.py
 
-# 4. Transformación ELT
-echo "[4/4] Verificando modelos dbt..."
+# 4. Transformación ELT con dbt
+echo "[4/4] Ejecutando Modelado de Datos (dbt)..."
 cd dbt_project
-dbt --version
+dbt deps --profiles-dir .
+dbt run --profiles-dir .
 cd ..
 
 echo "============================================================"
-echo "✅ DEMO COMPLETADA EXITOSAMENTE"
-echo "Pipeline validado: Ingesta C++ -> Data Lake -> dbt Models."
+echo "✅ DEMO FINALIZADA CON ÉXITO."
+echo "Pipeline validado: CSV -> PostgreSQL -> dbt Models."
 echo "============================================================"
