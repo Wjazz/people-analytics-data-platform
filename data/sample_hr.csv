@@ -1,6 +1,6 @@
-employee_id,first_name,last_name,department,job_title,gender,salary,status,hire_date,termination_date
-1,James,Holden,Engineering,Software Engineer,M,5000,Active,2020-01-15,
-2,Amos,Burton,Sales,Account Executive,M,4000,Terminated,2021-03-10,2022-05-20
-3,Naomi,Nagata,Engineering,Senior Engineer,F,7000,Active,2019-06-01,
-4,Chrisjen,Avasarala,HR,HR Business Partner,F,4500,Active,2022-01-10,
-5,Bobbie,Draper,Sales,Sales Manager,F,6000,Terminated,2020-08-15,2023-01-10
+employee_id,first_name,last_name,email,department_id,position_id,hire_date,termination_date,is_active,salary
+1,James,Holden,jholden@roci.com,101,501,2020-01-15,,true,5000
+2,Amos,Burton,aburton@roci.com,102,502,2021-03-10,2022-05-20,false,4000
+3,Naomi,Nagata,nnagata@roci.com,101,503,2019-06-01,,true,7000
+4,Chrisjen,Avasarala,cavasarala@un.gov,103,504,2022-01-10,,true,4500
+5,Bobbie,Draper,bdraper@mcrn.gov,102,505,2020-08-15,2023-01-10,false,6000
