@@ -10,19 +10,22 @@ engine = create_engine(db_url)
 
 def load_data():
     try:
-        # 1. Crear el esquema 'raw' que dbt está buscando
+        # 1. Crear el esquema 'raw'
         with engine.connect() as conn:
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS raw;"))
             conn.commit()
             logger.info("Esquema 'raw' verificado.")
 
-        # 2. Leer la "sangre" (datos HR)
-        df = pd.read_csv("data/sample_hr.csv")
-        
-        # 3. Inyectar directamente a la tabla raw.employees
-        df.to_sql("employees", engine, schema="raw", if_exists="replace", index=False)
-        logger.info(f"✅ {len(df)} registros inyectados exitosamente en raw.employees")
-        
+        # 2. Inyectar Empleados
+        df_emp = pd.read_csv("data/sample_hr.csv")
+        df_emp.to_sql("employees", engine, schema="raw", if_exists="replace", index=False)
+        logger.info(f"✅ {len(df_emp)} registros en raw.employees")
+
+        # 3. Inyectar Evaluaciones de Desempeño
+        df_perf = pd.read_csv("data/sample_performance.csv")
+        df_perf.to_sql("performance_reviews", engine, schema="raw", if_exists="replace", index=False)
+        logger.info(f"✅ {len(df_perf)} registros en raw.performance_reviews")
+
     except Exception as e:
         logger.error(f"Error fatal en la inyección: {e}")
 
