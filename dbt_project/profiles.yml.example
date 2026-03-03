@@ -1,0 +1,12 @@
+people_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: analytics_user
+      pass: ${DB_PASSWORD} # La contraseña debe ser inyectada por variable de entorno
+      port: 5432
+      dbname: people_analytics
+      schema: analytics_marts
+      threads: 4
