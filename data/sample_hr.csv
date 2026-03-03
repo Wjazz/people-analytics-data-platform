@@ -1,6 +1,6 @@
-employee_id,departamento_nombre,puesto,genero,salario,estado_laboral,fecha_ingreso,fecha_egreso,fecha_apertura_vacante
-1,Engineering,Software Engineer,M,5000,Activo,2020-01-15,,2019-12-01
-2,Sales,Account Executive,F,4000,Inactivo,2021-03-10,2022-05-20,2021-02-01
-3,Engineering,Senior Engineer,F,7000,Activo,2019-06-01,,2019-05-01
-4,HR,HR Business Partner,M,4500,Activo,2022-01-10,,2021-12-01
-5,Sales,Sales Manager,M,6000,Inactivo,2020-08-15,2023-01-10,2020-07-01
+employee_id,first_name,last_name,department,job_title,gender,salary,status,hire_date,termination_date
+1,James,Holden,Engineering,Software Engineer,M,5000,Active,2020-01-15,
+2,Amos,Burton,Sales,Account Executive,M,4000,Terminated,2021-03-10,2022-05-20
+3,Naomi,Nagata,Engineering,Senior Engineer,F,7000,Active,2019-06-01,
+4,Chrisjen,Avasarala,HR,HR Business Partner,F,4500,Active,2022-01-10,
+5,Bobbie,Draper,Sales,Sales Manager,F,6000,Terminated,2020-08-15,2023-01-10
