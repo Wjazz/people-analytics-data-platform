@@ -17,7 +17,7 @@ source .venv/bin/activate
 
 # 3. Ejecución del Extractor
 echo "[3/4] Ejecutando Extracción y Limpieza..."
-python src/extractors/csv_extractor.py
+python src/extractors/load_hr_data.py
 
 # 4. Transformación ELT con dbt
 echo "[4/4] Ejecutando Modelado de Datos (dbt)..."
