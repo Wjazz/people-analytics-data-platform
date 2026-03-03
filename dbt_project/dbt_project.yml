@@ -1,8 +1,8 @@
-name: 'bourbaki_people_analytics'
+name: 'people_analytics'
 version: '1.0.0'
 config-version: 2
 
-profile: 'bourbaki_people_analytics'
+profile: 'people_analytics'
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -19,7 +19,7 @@ clean-targets:
 # Materialización por capa (Convention over Configuration)
 # ---------------------------------------------------------------------------
 models:
-  bourbaki_people_analytics:
+  people_analytics:
     staging:
       +materialized: view        # Staging = views ligeras, siempre frescas
       +schema: staging
