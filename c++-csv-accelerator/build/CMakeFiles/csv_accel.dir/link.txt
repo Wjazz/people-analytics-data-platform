@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -O3 -march=native -flto -flto -Wl,--dependency-file=CMakeFiles/csv_accel.dir/link.d -shared  -o csv_accel.cpython-311-x86_64-linux-gnu.so CMakeFiles/csv_accel.dir/pybind_module.cpp.o CMakeFiles/csv_accel.dir/csv_reader.cpp.o
