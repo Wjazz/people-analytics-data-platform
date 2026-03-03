@@ -8,6 +8,7 @@ import logging
 from typing import Dict, List, Optional
 from pathlib import Path
 import pandas as pd
+import json
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
@@ -95,7 +96,7 @@ class CSVExtractor:
                         "employee_code": row[employee_code_column],
                         "assessment_type": assessment_type,
                         "assessment_date": row[assessment_date_column],
-                        "raw_data": raw_data
+                        "raw_data": json.dumps(raw_data)
                     }
                 )
                 records_inserted += 1
