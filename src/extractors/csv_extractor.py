@@ -8,7 +8,7 @@ import logging
 from typing import Dict, List, Optional
 from pathlib import Path
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 logger = logging.getLogger(__name__)
@@ -89,8 +89,8 @@ class CSVExtractor:
                     VALUES (:employee_code, :assessment_type, :assessment_date, :raw_data, FALSE)
                 """
                 
-                session.execute(
-                    insert_query,
+                session.execute(text(insert_query),
+                    # insert_query,
                     {
                         "employee_code": row[employee_code_column],
                         "assessment_type": assessment_type,
@@ -190,10 +190,10 @@ class CSVExtractor:
                     SELECT COUNT(*) FROM staging_raw_assessments
                     WHERE processed = FALSE AND assessment_type = :type
                 """
-                result = session.execute(query, {"type": assessment_type})
+                result = session.execute(text(insert_query),query, {"type": assessment_type})
             else:
                 query = "SELECT COUNT(*) FROM staging_raw_assessments WHERE processed = FALSE"
-                result = session.execute(query)
+                result = session.execute(text(insert_query),query)
             
             count = result.scalar()
             return count
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     # Extract from sample CSV
     try:
         count = extractor.extract_from_csv(
-            file_path="../data/sample_big_five.csv",
+            file_path="data/sample_big_five.csv",
             assessment_type="BigFive"
         )
         print(f"✓ Extracted {count} records")
