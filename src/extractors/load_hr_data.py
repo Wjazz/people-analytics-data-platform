@@ -10,11 +10,12 @@ engine = create_engine(db_url)
 
 def load_data():
     try:
-        # 1. Crear el esquema 'raw'
+        # 1. Purgar el esquema raw y todas las vistas de dbt que dependan de él
         with engine.connect() as conn:
-            conn.execute(text("CREATE SCHEMA IF NOT EXISTS raw;"))
+            conn.execute(text("DROP SCHEMA IF EXISTS raw CASCADE;"))
+            conn.execute(text("CREATE SCHEMA raw;"))
             conn.commit()
-            logger.info("Esquema 'raw' verificado.")
+            logger.info("Esquema 'raw' purgado y recreado en limpio.")
 
         # 2. Inyectar Empleados
         df_emp = pd.read_csv("data/sample_hr.csv")
