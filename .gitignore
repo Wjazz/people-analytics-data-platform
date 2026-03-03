@@ -3,3 +3,4 @@
 c++-csv-accelerator/build/
 *.so
 *.o
+dbt_project/profiles.yml
