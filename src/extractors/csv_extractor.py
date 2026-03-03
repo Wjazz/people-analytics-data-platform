@@ -191,10 +191,10 @@ class CSVExtractor:
                     SELECT COUNT(*) FROM staging_raw_assessments
                     WHERE processed = FALSE AND assessment_type = :type
                 """
-                result = session.execute(text(insert_query),query, {"type": assessment_type})
+                result = session.execute(text(query), {"type": assessment_type})
             else:
                 query = "SELECT COUNT(*) FROM staging_raw_assessments WHERE processed = FALSE"
-                result = session.execute(text(insert_query),query)
+                result = session.execute(text(query))
             
             count = result.scalar()
             return count
