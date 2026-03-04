@@ -4,13 +4,13 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:14-alpine
-    container_name: people_analytics_db
+    container_name: ${COMPOSE_PROJECT_NAME}_db
     environment:
-      POSTGRES_USER: analytics_user
-      POSTGRES_PASSWORD: analytics_pass
-      POSTGRES_DB: people_analytics
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
