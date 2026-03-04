@@ -1,4 +1,4 @@
-name: Data Platform CI/CD
+name: People Analytics CI/CD
 
 on:
   push:
@@ -7,10 +7,10 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test-and-build:
     runs-on: ubuntu-latest
-    
-    # Levantar un servicio de PostgreSQL directamente en GitHub Actions
+
+    # PostgreSQL service container for E2E pipeline validation
     services:
       postgres:
         image: postgres:15
@@ -31,23 +31,30 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Python 3.11
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    - name: Install Python Dependencies
+    - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install pyyaml scipy
 
-    - name: Run Data Extraction (Python -> Postgres)
+    # ─── Unit Tests ───────────────────────────────────────────────
+    - name: Run Unit Tests (pytest)
+      run: |
+        pytest tests/ -v --tb=short
+
+    # ─── E2E Pipeline ─────────────────────────────────────────────
+    - name: Run Data Extraction (Python → Postgres)
       run: |
         python src/extractors/load_hr_data.py
 
     - name: Run dbt Data Modeling
       run: |
         cd dbt_project
-        # Generar profiles.yml al vuelo para CI
+        # Generate profiles.yml on-the-fly for CI
         cat << 'INNER_EOF' > profiles.yml
         people_analytics:
           target: dev
@@ -62,6 +69,7 @@ jobs:
               schema: analytics_marts
               threads: 4
         INNER_EOF
-        
+
         dbt deps --profiles-dir .
         dbt run --profiles-dir .
+        dbt test --profiles-dir .

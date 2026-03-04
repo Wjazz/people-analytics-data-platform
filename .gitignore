@@ -1,9 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
 
 # C++ Build Artifacts
 c++-csv-accelerator/build/
 *.so
 *.o
+
+# dbt
 dbt_project/profiles.yml
-dbt_project/profiles.yml
-dbt_project/profiles.yml
+dbt_project/target/
+dbt_project/logs/
+dbt_project/dbt_packages/
+
+# Environment
 .env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
