@@ -1,0 +1,67 @@
+name: Data Platform CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    # Levantar un servicio de PostgreSQL directamente en GitHub Actions
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: analytics_user
+          POSTGRES_PASSWORD: analytics_pass
+          POSTGRES_DB: people_analytics
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Data Extraction (Python -> Postgres)
+      run: |
+        python src/extractors/load_hr_data.py
+
+    - name: Run dbt Data Modeling
+      run: |
+        cd dbt_project
+        # Generar profiles.yml al vuelo para CI
+        cat << 'INNER_EOF' > profiles.yml
+        people_analytics:
+          target: dev
+          outputs:
+            dev:
+              type: postgres
+              host: localhost
+              user: analytics_user
+              pass: analytics_pass
+              port: 5432
+              dbname: people_analytics
+              schema: analytics_marts
+              threads: 4
+        INNER_EOF
+        
+        dbt deps --profiles-dir .
+        dbt run --profiles-dir .
