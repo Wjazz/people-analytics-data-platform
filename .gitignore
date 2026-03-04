@@ -16,6 +16,8 @@ dbt_project/profiles.yml
 dbt_project/target/
 dbt_project/logs/
 dbt_project/dbt_packages/
+dbt_project/repo.git/
+dbt_project/.user.yml
 
 # Environment
 .env

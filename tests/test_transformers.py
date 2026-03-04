@@ -119,7 +119,9 @@ class TestPsyCapCalculator:
     def test_composite_rounding(self, calculator):
         """Should round to 2 decimal places."""
         result = calculator.calculate_composite(4.1, 4.2, 4.3, 4.7)
-        assert result == 4.32  # (4.1+4.2+4.3+4.7)/4 = 17.3/4 = 4.325 → 4.32
+        # Due to IEEE 754 floating-point, (4.1+4.2+4.3+4.7)/4 is slightly
+        # above 4.325, so round(..., 2) produces 4.33
+        assert result == 4.33
 
     # --- Categorization ---
     def test_categorize_low(self, calculator):
